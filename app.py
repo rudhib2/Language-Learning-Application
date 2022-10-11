@@ -11,6 +11,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'squlite:///testdb'
 #database???
 db = SQLAlchemy(app)
 
+def randomfun():
+    pass
+
+
 
 @app.route('/')
 def index():
