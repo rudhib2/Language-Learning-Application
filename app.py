@@ -14,6 +14,8 @@ db = SQLAlchemy(app)
 def randomfun():
     pass
 
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
