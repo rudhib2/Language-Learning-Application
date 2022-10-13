@@ -1,16 +1,25 @@
 from flask import Flask, render_template, url_for
 from flask_sqlalchemy import SQLAlchemy
 from PyMultiDictionary import MultiDictionary
-import numpy as np
+from datetime import datetime
+
 #object dic created from multiDictionary
 dic = MultiDictionary()
 import random
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'squlite:///testdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///testdb'
 #database???
 db = SQLAlchemy(app)
 
+#Task created, set the date automatically
+class Model(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(500), nullable=False)
+    data_created = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # def__repr__(self):
+    #     return '<Task %r>' % self.id
 
 
 
