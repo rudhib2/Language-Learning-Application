@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 title {
     margin: 0;
     font-family: 'Times New Roman', Times, serif;
@@ -26,3 +27,9 @@ h2{
     text-shadow: -1px 0 black, 0 2px black, 1px 0 black, 0 -1px black;
     font-size: 15px;
 }
+=======
+body {
+    margin: 0;
+    font-family: 'Times New Roman', Times, serif;
+}
+>>>>>>> 969314e1f36792b3d85c06c8a6df42429e87800a
