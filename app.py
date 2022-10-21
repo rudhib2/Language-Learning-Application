@@ -18,8 +18,6 @@ class Model(db.Model):
     content = db.Column(db.String(500), nullable=False)
     data_created = db.Column(db.DateTime, default=datetime.utcnow)
 
-    # def__repr__(self):
-    #     return '<Task %r>' % self.id
 
 
 
@@ -39,7 +37,10 @@ class PlayerInfo:
     #array storing English words
     english = []
     #array storing words in another languages selected by the user
-    other_language = []
+    other_language = [] 
+    #number of guesses for each words and resets after correct selection
+    num_of_guesses = 3
+
 
 #get meaning of the passed in word in the required language
 def get_meaning(provided_language, word, target_language):
@@ -61,6 +62,11 @@ def valid_input(user_input):
     for i in range(number_of_card_pairs):
         if user_input == english[i]:
             valid = True
+    if valid == False:
+        num_of_guesses = num_of_guesses - 1
+        if num_of_guesses == 0:
+            #fix later so indtead of printing we end game
+            print("Ran out of guesses, sorry :(")        
     return valid
  
  
@@ -71,6 +77,7 @@ def correct_input(user_input):
         if user_input == english[i]:
             update_user_score()
             remove(user_input)
+            num_of_guesses = 3
     return 
  
 #remove word and definition once we get it correct
