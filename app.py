@@ -12,18 +12,23 @@ db = SQLAlchemy(app)
 
 
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+# # @app.route('/')
+# # def index():
+# #     temp = 1
+# #     return render_template('index.html', value = temp, guess = "test")
 
-if __name__ == "__main__":
-    app.run(debug=True)
+# if __name__ == "__main__":
+#     app.run(debug=True)
 
 class PlayerInfo:
     # Private variable score keep track of the score of the user
     score = 0
     # Private variable number_of_card_pairs left on screen (updates once the user answered the question correctly)
     number_of_card_pairs = 5
+    #words from txt file converted to word bank
+    #word_bank = []
+    with open('easy_words.txt','r') as w:
+        word_bank = w.read().split()
     # Array storing English words
     english = []
     # Array storing words in another languages selected by the user
@@ -43,7 +48,12 @@ def get_meaning(provided_language, word, target_language):
 # Generate several? random words in the target_language
 def generate_rand_words(target_language):
     # Assigning definition and words into 2 separate arrays each one contains 5 words
+    player.english.append(player.word_bank[0])
+    for i in player.number_of_card_pairs:
+        player.english.append(random.choice(player.word_bank))
+    english_word = random.choice(open("easy_words.txt","r").readline().split())
     # Picking random words to go into first array words
+    #make sure no duplicate words 
     # Getting definitions by calling get_meaning for the second array definitions
     # Call check_not_same()
     check_not_same()
@@ -74,6 +84,8 @@ def correct_input(user_input):
             update_user_score()
             remove(user_input)
             player.num_of_guesses = 3
+            #should update frontend display of guesses
+            render_template("index.html", guess = player.num_of_guesses)
     return 
  
 # Remove word and definition once we get it correct
@@ -105,8 +117,9 @@ def check_not_same():
  
 # Controls the user score
 def get_user_score():
-    return player.score
- 
+    #render_template('index.html', score = player.score, test = "here")
+    return player.score 
+
 # Setting the user score
 def set_user_score(input):
     player.score = input
@@ -117,4 +130,10 @@ def update_user_score():
     player.score += 1
     return
 
- 
+@app.route('/')
+def index():
+    temp = 1
+    return render_template('index.html', score = player.score, guess = player.num_of_guesses, word = player.word_bank[0])
+
+if __name__ == "__main__":
+    app.run(debug=True)
