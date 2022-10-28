@@ -9,6 +9,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///testdb'
 #database???
 db = SQLAlchemy(app)
+
 class user(db.Model):
     name = db.Column(db.String(50), nullable=False, primary_key=True)
     score = db.Column(db.Integer, default=0)
