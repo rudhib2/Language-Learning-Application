@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from PyMultiDictionary import MultiDictionary
 from datetime import datetime
@@ -9,6 +9,16 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///testdb'
 #database???
 db = SQLAlchemy(app)
+class user(db.Model):
+    name = db.Column(db.String(50), nullable=False, primary_key=True)
+    score = db.Column(db.Integer, default=0)
+    finished = db.Column(db.Boolean, default=False)
+
+    def __init__(self, name):
+        self.name = name
+        self.score = get_user_score()
+        self.finished = status()
+
 
 
 
@@ -33,7 +43,7 @@ class PlayerInfo:
     english = []
     # Array storing words in another languages selected by the user
     other_language = [] 
-    # number of guesses for each words and resets after correct selection
+    # Number of guesses for each words and resets after correct selection
     num_of_guesses = 3
 
 
@@ -53,7 +63,7 @@ def generate_rand_words(target_language):
         player.english.append(random.choice(player.word_bank))
     english_word = random.choice(open("easy_words.txt","r").readline().split())
     # Picking random words to go into first array words
-    #make sure no duplicate words 
+    # Make sure no duplicate words 
     # Getting definitions by calling get_meaning for the second array definitions
     # Call check_not_same()
     check_not_same()
@@ -98,7 +108,7 @@ def remove(word):
     return
  
 # Check if the game is over
-def finished():
+def status():
     if player.number_of_card_pairs == 0 or player.num_of_guesses == 0:
         return True
     else: 
@@ -117,7 +127,7 @@ def check_not_same():
  
 # Controls the user score
 def get_user_score():
-    #render_template('index.html', score = player.score, test = "here")
+    # Render_template('index.html', score = player.score, test = "here")
     return player.score 
 
 # Setting the user score
@@ -133,7 +143,26 @@ def update_user_score():
 @app.route('/')
 def index():
     temp = 1
-    return render_template('index.html', score = player.score, guess = player.num_of_guesses, word = player.word_bank[0])
+    return render_template('index.html', user = user.query.all())
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+@app.route('/', methods = ['GET', 'POST'])
+def instance():
+    if request.method == 'POST':
+        player = user(request.form['name'])
+        db.session.add(player)
+        db.session.commit()
+        flash('You can start playing!!!')
+        return redirect(url_for('index'))
+    else:
+        return render_template('instance.html')
+
+
+@app.route('/delete/')
+def delete(name):
+    user_to_delete = user.query.get_or_404(name)
+    db.session.delete(user_to_delete)
+    db.session.commit()
+    return redirect(url_for('index'))
