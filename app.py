@@ -1,9 +1,9 @@
-#importing flask
-from flask import Flask, render_template, url_for, request, redirect, flash
+"""importing Flask"""
+#from datetime import datetime  url_for, redirect, , flash
+import random
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from PyMultiDictionary import MultiDictionary
-from datetime import datetime
-import random
 
 
 app = Flask(__name__)
@@ -33,6 +33,7 @@ db = SQLAlchemy(app)
 #     app.run(debug=True)
 
 class PlayerInfo:
+    """declaring PlayerInfo Class to keep track of words, score, guesses"""
     # Private variable score keep track of the score of the user
     score = 0
     # Private variable number_of_card_pairs left on screen
@@ -40,7 +41,7 @@ class PlayerInfo:
     number_of_card_pairs = 5
     #words from txt file converted to word bank
     #word_bank = []
-    with open('easy_words.txt','r') as w:
+    with open('easy_words.txt','r', encoding="utf-8") as w:
         word_bank = w.read().split()
     # Array storing English words
     english = []
@@ -53,13 +54,14 @@ class PlayerInfo:
 player = PlayerInfo()
 dic = MultiDictionary()
 
-# Get meaning of the passed in word in the required language
+
 def get_meaning(provided_language, word, target_language):
+    """Get meaning of the passed in word in the required language"""
     word = dic.translate(provided_language, word, to=target_language)
     return word
 
-# Generate several? random words in the target_language
 def generate_rand_words(target_language):
+    """Generate several? random words in the target_language"""
     # Assigning definition and words into 2 separate arrays each one contains 5 words
     player.english.append(player.word_bank[0])
     #will randomly choose words from the txt files for the english array
@@ -69,22 +71,23 @@ def generate_rand_words(target_language):
     for i in range(player.number_of_card_pairs):
         player.other_language.append(get_meaning("en", player.english[i], target_language))
     # Call check_not_same()
-    num_of_dups = check_not_same()
-    if num_of_dups() > 0:
-        #remove duplicates  
-        for i in player.other_language:
-            if i in num_of_dups:
-                player.other_language.remove(i)
-    return
 
-# Checking the user input if they are valid, comparing the output from get_meaning to the user input
+    if check_not_same() > 0:
+        #remove duplicates
+        for i in player.other_language:
+            if i in check_not_same():
+                player.other_language.remove(i)
+
+
+
 def valid_input(user_input):
+    """Checking if valid user input, comparing get_meaning to user input"""
     # Checking the array of definitions and words to see if user_input exists
     valid = False
     for i in range(player.number_of_card_pairs):
         if user_input == player.english[i]:
             valid = True
-    if valid == False:
+    if valid is False:
         player.num_of_guesses -= 1
         if player.num_of_guesses == 0:
             # Fix later so instead of printing we end game
@@ -92,8 +95,9 @@ def valid_input(user_input):
     return valid
 
 
-# Check if the user input is correct
+
 def correct_input(user_input):
+    """Check if the user input is correct"""
     # Check if word matches the definition
     # Call valid_input
     valid_input(user_input)
@@ -104,55 +108,72 @@ def correct_input(user_input):
             player.num_of_guesses = 3
             #should update frontend display of guesses
             render_template("index.html", guess = player.num_of_guesses)
-    return
 
-# Remove word and definition once we get it correct
+
 def remove(word):
+    """Remove word and definition once we get it correct"""
     for i in range(player.number_of_card_pairs):
         if word == player.english[i]:
             player.english.pop(i)
             player.other_language.pop(i)
             player.number_of_card_pairs -= 1
-    return
 
-# Check if the game is over
+
+
 def status():
-    if player.number_of_card_pairs == 0 or player.num_of_guesses == 0:
-        return True
-    else:
-        return False
+    """Check if the game is over"""
+    return player.number_of_card_pairs == 0 or player.num_of_guesses == 0
 
-# Returning an arry of index of repeated words in other_language array
+
+
 def check_not_same():
+    """Returning an arry of index of repeated words in other_language array"""
     seen = []
     same = []
     for i in player.other_language:
         if i not in seen:
             seen.append(i)
         else:
-            same.append[i]
-    return same
+            same.append(i)
+    return len(same)
 
-# Controls the user score
+
 def get_user_score():
+    """Controls the user score"""
     return player.score
 
-# Setting the user score
-def set_user_score(input):
-    player.score = input
-    return
 
-# Updating the user score
+def set_user_score(input):
+    """Setting the user score"""
+    player.score = input
+
+
 def update_user_score():
+    """ Updating the user score"""
     player.score += 1
-    return
+
 
 @app.route('/')
-def index():
-    temp = 1
-    #user = user.query.all(),
-    return render_template('index.html', score = player.score,
-    guess = player.num_of_guesses, words = player.english)
+def welcome():
+    """Setting a welcome page"""
+    return render_template('welcome.html')
+
+
+@app.route('/Beginning Input(L/D)')
+def beginning_input():
+    """Inputting two variables language and difficulty from user"""
+    player.language = request.args["Language"]
+    player.difficulty = request.args["Difficulty"]
+    return render_template('index.html', Language=player.language, Difficulty=player.difficulty,
+    score = player.score, guess = player.num_of_guesses,
+    words = player.english, bank = player.word_bank)
+
+# @app.route('/')
+# def index():
+#     temp = 1
+#     #user = user.query.all(),
+#     return render_template('index.html', score = player.score,
+#     guess = player.num_of_guesses, words = player.english)
 
 if __name__ == "__main__":
     app.run(debug=True)

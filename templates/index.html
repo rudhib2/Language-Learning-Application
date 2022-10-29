@@ -1,38 +1,79 @@
-{% extends 'base.html' %}
-
-{% block head %}
-
-<title>Word Game!</title>
-=======
-
-<h1>Hello User</h1>
-{% endblock %}
-
-{% block body %}
-<div class="content">
-
-    <h1>Number Of Guesses: {{ guess }}</h1>
-    <h2>Score: {{ score }}</h2>
-=======
-    <h1>Word Game</h1>
-    <div id="cards">
-        {{words[0]}}
-    </div>
-    <div id="cards">
-        {{words[1]}}
-    </div>
-    <div id="cards">
-        {{words[2]}}
-    </div>
-    <div id="cards">
-        {{words[3]}}
-    </div>
-    <div id="cards">
-        {{words[4]}}
-    </div>
-    <div id="cards">
-        {{words[5]}}
-    </div>
-
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+ 
+ 
+header {
+  background-color: rgb(162, 100, 237);
+  color: white;
+  border: 3px solid black;
+  text-align: center;
+  margin: 20px;
+  padding: 8px;
+}
+ 
+ 
+.card {
+  background-color: cornflowerblue;
+  color: white;
+  border: 3px solid black;
+  text-align: center;
+  margin: 10px;
+  padding: 8px;
+  width: 100px;
+  height: 75px;
+  float:left
+}
+</style>
+<header>
+    <h2>Spanish Learning Card Game</h2>
+    <h4>Language: {{ Language }} &nbsp; &nbsp;  Difficulty: {{ Difficulty }}</h4>
+    <h4>Guesses: {{ guess }} &nbsp; &nbsp;  Score: {{ score }}</h4>
+</header>
+<body>
+ 
+ 
+<div class="card">
+<h2>{{ bank[0] }}</h2>
 </div>
-{% endblock %}
+ 
+<div class="card">
+<h2>Gato</h2>
+</div>
+ 
+<div class="card">
+<h2>Dog</h2>
+</div>
+ 
+<div class="card">
+<h2>Perro</h2>
+</div>
+ 
+<div class="card">
+<h2>Sun </h2>
+</div>
+ 
+<div class="card">
+<h2>Sol</h2>
+</div>
+ 
+<div class="card">
+<h2>Moon</h2>
+</div>
+ 
+<div class="card">
+<h2>Luna</h2>
+</div>
+ 
+<div class="card">
+<h2>Beach</h2>
+</div>
+ 
+<div class="card">
+<h2>Playa</h2>
+</div>
+ 
+ 
+</body>
+</html>
