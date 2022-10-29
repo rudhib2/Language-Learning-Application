@@ -11,15 +11,15 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///testdb'
 #database???
 db = SQLAlchemy(app)
 
-class user(db.Model):
-    name = db.Column(db.String(50), nullable=False, primary_key=True)
-    score = db.Column(db.Integer, default=0)
-    finished = db.Column(db.Boolean, default=False)
+# class user(db.Model):
+#     name = db.Column(db.String(50), nullable=False, primary_key=True)
+#     score = db.Column(db.Integer, default=0)
+#     finished = db.Column(db.Boolean, default=False)
 
-    def __init__(self, name):
-        self.name = name
-        self.score = get_user_score()
-        self.finished = status()
+#     def __init__(self, name):
+#         self.name = name
+#         self.score = get_user_score()
+#         self.finished = status()
 
 
 
@@ -150,27 +150,28 @@ def update_user_score():
 @app.route('/')
 def index():
     temp = 1
-    return render_template('index.html', user = user.query.all(), score = player.score,
+    #user = user.query.all(),
+    return render_template('index.html', score = player.score,
     guess = player.num_of_guesses, words = player.english)
 
 if __name__ == "__main__":
     app.run(debug=True)
 
-@app.route('/', methods = ['GET', 'POST'])
-def instance():
-    if request.method == 'POST':
-        player = user(request.form['name'])
-        db.session.add(player)
-        db.session.commit()
-        flash('You can start playing!!!')
-        return redirect(url_for('index'))
-    else:
-        return render_template('instance.html')
+# @app.route('/', methods = ['GET', 'POST'])
+# def instance():
+#     if request.method == 'POST':
+#         player = user(request.form['name'])
+#         db.session.add(player)
+#         db.session.commit()
+#         flash('You can start playing!!!')
+#         return redirect(url_for('index'))
+#     else:
+#         return render_template('instance.html')
 
 
-@app.route('/delete/')
-def delete(name):
-    user_to_delete = user.query.get_or_404(name)
-    db.session.delete(user_to_delete)
-    db.session.commit()
-    return redirect(url_for('index'))
+# @app.route('/delete/')
+# def delete(name):
+#     user_to_delete = user.query.get_or_404(name)
+#     db.session.delete(user_to_delete)
+#     db.session.commit()
+#     return redirect(url_for('index'))
