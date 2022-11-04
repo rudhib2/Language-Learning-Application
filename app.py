@@ -1,5 +1,6 @@
 """importing Flask"""
 #from datetime import datetime  url_for, redirect, , flash
+from ast import IsNot
 import random
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
@@ -40,25 +41,46 @@ class PlayerInfo:
     # (updates once the user answered the question correctly)
     number_of_card_pairs = 5
     #words from txt file converted to word bank
-    #word_bank = []
-    with open('easy_words.txt','r', encoding="utf-8") as w:
+    word_bank = []
+    # Moving this to an individual function??? Or thought we are using the multidictionary library?
+    with open('easy_words.txt', 'r', encoding="utf-8") as w:
         word_bank = w.read().split()
     # Array storing English words
     english = []
     # Array storing words in another languages selected by the user
     other_language = []
     # Number of guesses for each words and resets after correct selection
-    num_of_guesses = 3
-
+    num_of_guesses = 0
+    # Should contain either Easy, Medium, or Hard
+    level_of_difficulty = ""
 
 player = PlayerInfo()
 dic = MultiDictionary()
+
+
+
+def read_word(file):
+    with open(file, 'r', encoding="utf-8") as w:
+        player.word_bank = w.read().split()
+        
+
+
+def set_guess(level):
+    if player.level_of_difficulty == "Hard":
+        player.num_of_guesses += 5
+    elif player.level_of_difficulty == "Medium":
+        player.num_of_guesses += 4
+    else:
+        player.num_of_guesses += 3
+
 
 
 def get_meaning(provided_language, word, target_language):
     """Get meaning of the passed in word in the required language"""
     word = dic.translate(provided_language, word, to=target_language)
     return word
+
+
 
 def generate_rand_words(target_language):
     """Generate several? random words in the target_language"""
@@ -119,6 +141,12 @@ def remove(word):
             player.number_of_card_pairs -= 1
 
 
+def updateDifficulty(level):
+    if level != "Easy" or level != "Medium" or level != "Hard":
+        print("Something is wrong")
+    else:
+        player.level_of_difficulty = level
+
 
 def status():
     """Check if the game is over"""
@@ -150,7 +178,12 @@ def set_user_score(input):
 
 def update_user_score():
     """ Updating the user score"""
-    player.score += 1
+    if player.level_of_difficulty == "Hard":
+        player.score += 3
+    elif player.level_of_difficulty == "Medium":
+        player.score += 2
+    else:
+        player.score += 1
 
 
 @app.route('/')
