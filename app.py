@@ -59,6 +59,7 @@ dic = MultiDictionary()
 
 
 
+
 def read_word(file):
     with open(file, 'r', encoding="utf-8") as w:
         player.word_bank = w.read().split()
