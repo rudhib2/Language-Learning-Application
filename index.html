@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+
+header {
+  background-color: rgb(162, 100, 237);
+  color: white;
+  border: 3px solid black;
+  text-align: center;
+  margin: 20px;
+  padding: 8px;
+}
+
+
+.card {
+  background-color: cornflowerblue;
+  color: white;
+  border: 3px solid black;
+  text-align: center;
+  margin: 10px;
+  padding: 8px;
+  width: 100px; 
+  height: 75px;
+  float:left
+}
+</style>
+<header>
+    <h2>Spanish learning Card Game</h2>
+    <h4>Language: {{ Language }} &nbsp; &nbsp;  Difficulty: {{ Difficulty }}</h4>
+    <h4>Guesses: {{ guess }} &nbsp; &nbsp;  Score: {{ score }}</h4>
+</header>
+<body>
+
+
+<div class="card" id="card1" onclick="card1()">
+<h2>Cat</h2>
+</div> 
+
+<div class="card" id="card2" onclick="card2()">
+<h2>Gato</h2>
+</div>
+
+<div class="card" id="card3" onclick="card3()">
+<h2>Dog</h2>
+</div>
+
+<div class="card" id="card4" onclick="card4()">
+<h2>Perro</h2>
+</div>
+
+<div class="card">
+<h2>Sun </h2>
+</div> 
+
+<div class="card">
+<h2>Sol</h2>
+</div>
+
+<div class="card">
+<h2>Moon</h2>
+</div>
+
+<div class="card">
+<h2>Luna</h2>
+</div>
+
+<div class="card">
+<h2>Beach</h2>
+</div>
+
+<div class="card">
+<h2>Playa</h2>
+</div>
+
+<script>
+function card1() {
+    var x = document.getElementById("card1");
+    if (x.style.backgroundColor === "cornflowerblue") {
+        x.style.backgroundColor = "#83AAF1";
+        x.style.boxShadow = "10px 10px 10px #839ef1";
+    } else {
+        x.style.backgroundColor = "cornflowerblue";
+        x.style.boxShadow = "";
+    }
+}
+</script>
+
+<script>
+    function card2() {
+        var x = document.getElementById("card2");
+        if (x.style.backgroundColor === "cornflowerblue") {
+            x.style.backgroundColor = "#83AAF1";
+            x.style.boxShadow = "10px 10px 10px #839ef1";
+        } else {
+            x.style.backgroundColor = "cornflowerblue";
+            x.style.boxShadow = "";
+        }
+    }
+</script>
+
+
+<script>
+    function card3() {
+        var x = document.getElementById("card3");
+        if (x.style.backgroundColor === "cornflowerblue") {
+            x.style.backgroundColor = "#83AAF1";
+            x.style.boxShadow = "10px 10px 10px #839ef1";
+        } else {
+            x.style.backgroundColor = "cornflowerblue";
+            x.style.boxShadow = "";
+        }
+    }
+</script>
+
+<script>
+    function card4() {
+        var x = document.getElementById("card4");
+        if (x.style.backgroundColor === "cornflowerblue") {
+            x.style.backgroundColor = "#83AAF1";
+            x.style.boxShadow = "10px 10px 10px #839ef1";
+        } else {
+            x.style.backgroundColor = "cornflowerblue";
+            x.style.boxShadow = "";
+        }
+    }
+</script>
+
+
+</body>
+</html>
