@@ -41,22 +41,48 @@ class PlayerInfo:
     # (updates once the user answered the question correctly)
     number_of_card_pairs = 5
     #words from txt file converted to word bank
-    word_bank = []
-    # Moving this to an individual function??? Or thought we are using the multidictionary library?
-    with open('easy_words.txt', 'r', encoding="utf-8") as w:
+
+    #word_bank = []
+    #need to call function set_difficulty to initialize it
+     # Moving this to an individual function??? Or thought we are using the multidictionary library?
+    with open('easy_words.txt','r', encoding="utf-8") as w:
+
         word_bank = w.read().split()
     # Array storing English words
     english = []
+    #english.append(word_bank[0])
+    #comment out later but for now leave for display
+    english = random.choices(word_bank, k=5)
+    #varaible for the other language
+    language = ""
     # Array storing words in another languages selected by the user
     other_language = []
     # Number of guesses for each words and resets after correct selection
     num_of_guesses = 0
-    # Should contain either Easy, Medium, or Hard
-    level_of_difficulty = ""
+    #difficulty: should contain either Easy, Medium, or Hard
+    difficulty = ""
+
+
 
 player = PlayerInfo()
 dic = MultiDictionary()
 
+def set_difficulty():
+    if player.difficulty == "Easy":
+        with open('easy_words.txt','r', encoding="utf-8") as w:
+            player.word_bank = w.read().split()
+    if player.difficulty == "Medium":
+        with open('medium_words.txt','r', encoding="utf-8") as w:
+            player.word_bank = w.read().split()
+    if player.difficulty == "Hard":
+        with open('hard_words.txt','r', encoding="utf-8") as w:
+            player.word_bank = w.read().split()
+
+def set_language():
+    if player.language == "Spanish":
+        player.language = "es"
+    if player.language == "French":
+        player.language == "fr"
 
 
 
@@ -89,7 +115,8 @@ def generate_rand_words(target_language):
     player.english.append(player.word_bank[0])
     #will randomly choose words from the txt files for the english array
     #still need to check for duplicates
-    player.english.append(random.choices(player.word_bank, player.number_of_card_pairs))
+    # english = random.choices(word_bank, k=5)
+    player.english = random.choices(player.word_bank, k=player.number_of_card_pairs)
     # Getting definitions by calling get_meaning for the second array definitions
     for i in range(player.number_of_card_pairs):
         player.other_language.append(get_meaning("en", player.english[i], target_language))
