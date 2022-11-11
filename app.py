@@ -113,17 +113,15 @@ def generate_rand_words(target_language):
     """Generate several? random words in the target_language"""
     # Assigning definition and words into 2 separate arrays each one contains 5 words
     player.english.append(player.word_bank[0])
-    #will randomly choose words from the txt files for the english array
-    #still need to check for duplicates
-    # english = random.choices(word_bank, k=5)
+    # Will randomly choose words from the txt files for the english array
+    # English = random.choices(word_bank, k=5)
     player.english = random.choices(player.word_bank, k=player.number_of_card_pairs)
     # Getting definitions by calling get_meaning for the second array definitions
     for i in range(player.number_of_card_pairs):
         player.other_language.append(get_meaning("en", player.english[i], target_language))
-    # Call check_not_same()
-
+    # Call check_not_same(), check for duplicates
     if check_not_same() > 0:
-        #remove duplicates
+        # Remove duplicates
         for i in player.other_language:
             if i in check_not_same():
                 player.other_language.remove(i)
@@ -134,14 +132,14 @@ def valid_input(user_input):
     """Checking if valid user input, comparing get_meaning to user input"""
     # Checking the array of definitions and words to see if user_input exists
     valid = False
+    if player.num_of_guesses == 0:
+        # Fix later so instead of printing we end game
+        return print("Ran out of guesses, sorry :(")
     for i in range(player.number_of_card_pairs):
         if user_input == player.english[i]:
             valid = True
     if valid is False:
         player.num_of_guesses -= 1
-        if player.num_of_guesses == 0:
-            # Fix later so instead of printing we end game
-            print("Ran out of guesses, sorry :(")
     return valid
 
 
