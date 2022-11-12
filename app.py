@@ -57,6 +57,8 @@ class PlayerInfo:
     language = ""
     # Array storing words in another languages selected by the user
     other_language = []
+    # Array to hold other_language and english words for the display
+    all_words_random = []
     # Number of guesses for each words and resets after correct selection
     num_of_guesses = 0
     #difficulty: should contain either Easy, Medium, or Hard
@@ -89,7 +91,6 @@ def set_language():
 def read_word(file):
     with open(file, 'r', encoding="utf-8") as w:
         player.word_bank = w.read().split()
-        
 
 
 def set_guess(level):
@@ -119,6 +120,12 @@ def generate_rand_words(target_language):
     # Getting definitions by calling get_meaning for the second array definitions
     for i in range(player.number_of_card_pairs):
         player.other_language.append(get_meaning("en", player.english[i], target_language))
+    # Initialize the all_words_random
+    for i in range(player.number_of_card_pairs):
+        player.all_words_random.append(player.english[i])
+        player.all_words_random.append(player.other_language[i])
+    random.shuffle(player.all_words_random)
+
     # Call check_not_same(), check for duplicates
     if check_not_same() > 0:
         # Remove duplicates
