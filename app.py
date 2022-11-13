@@ -42,17 +42,17 @@ class PlayerInfo:
     number_of_card_pairs = 5
     #words from txt file converted to word bank
 
-    #word_bank = []
+    word_bank = []
     #need to call function set_difficulty to initialize it
      # Moving this to an individual function??? Or thought we are using the multidictionary library?
-    with open('easy_words.txt','r', encoding="utf-8") as w:
+    # with open('easy_words.txt','r', encoding="utf-8") as w:
 
-        word_bank = w.read().split()
+    #     word_bank = w.read().split()
     # Array storing English words
     english = []
     #english.append(word_bank[0])
     #comment out later but for now leave for display
-    english = random.choices(word_bank, k=5)
+    #english = random.choices(word_bank, k=5)
     #varaible for the other language
     language = ""
     # Array storing words in another languages selected by the user
@@ -63,6 +63,7 @@ class PlayerInfo:
     num_of_guesses = 0
     #difficulty: should contain either Easy, Medium, or Hard
     difficulty = ""
+
 
 
 
@@ -113,25 +114,25 @@ def get_meaning(provided_language, word, target_language):
 def generate_rand_words(target_language):
     """Generate several? random words in the target_language"""
     # Assigning definition and words into 2 separate arrays each one contains 5 words
-    player.english.append(player.word_bank[0])
+    #player.english.append(player.word_bank[0])
     # Will randomly choose words from the txt files for the english array
     # English = random.choices(word_bank, k=5)
     player.english = random.choices(player.word_bank, k=player.number_of_card_pairs)
+    player.english[1] = "hi"
     # Getting definitions by calling get_meaning for the second array definitions
     for i in range(player.number_of_card_pairs):
-        player.other_language.append(get_meaning("en", player.english[i], target_language))
+        player.other_language.append(dic.translate("en", player.english[i])[6][1])
     # Initialize the all_words_random
     for i in range(player.number_of_card_pairs):
         player.all_words_random.append(player.english[i])
         player.all_words_random.append(player.other_language[i])
     random.shuffle(player.all_words_random)
-
     # Call check_not_same(), check for duplicates
-    if check_not_same() > 0:
-        # Remove duplicates
-        for i in player.other_language:
-            if i in check_not_same():
-                player.other_language.remove(i)
+    # if check_not_same() > 0:
+    #     # Remove duplicates
+    #     for i in player.other_language:
+    #         if i in check_not_same():
+    #             player.other_language.remove(i)
 
 
 
@@ -230,9 +231,13 @@ def beginning_input():
     """Inputting two variables language and difficulty from user"""
     player.language = request.args["Language"]
     player.difficulty = request.args["Difficulty"]
+    set_difficulty()
+    set_language()
+    generate_rand_words(player.language)
     return render_template('index.html', Language=player.language, Difficulty=player.difficulty,
     score = player.score, guess = player.num_of_guesses,
-    words = player.english, bank = player.word_bank)
+    spanish_words = player.other_language, english = player.english, all_words = player.all_words_random,
+    test = player.test)
 
 # @app.route('/')
 # def index():

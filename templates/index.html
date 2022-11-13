@@ -22,8 +22,8 @@ header {
   margin: 10px;
   padding: 8px;
   width: 100px;
-  height: 75px;
-  float:left
+  height: 75px; 
+  float:left 
 }
 </style>
 <header>
@@ -32,47 +32,67 @@ header {
     <h4>Guesses: {{ guess }} &nbsp; &nbsp;  Score: {{ score }}</h4>
 </header>
 <body>
+
+<button name = "b1">
+  <div class="card">
+    <h2>{{ english[0] }}</h2>
+  </div>  
+</button>
  
+<button name = "b2">
+  <div class="card">
+    <h2>{{ english[1] }}</h2>
+  </div>
+</button>
+
+<button name = "b3">
+  <div class="card">
+    <h2>{{ english[2] }}</h2>
+  </div>
+</button>
+
+<button name = "b4">
+  <div class="card">
+    <h2>{{ english[3] }}</h2>
+  </div>
+</button>
+
+<button name = "b5">
+  <div class="card">
+    <h2>{{ english[4] }} </h2>
+  </div>
+</button>
+
+<button name = "b6">
+  <div class="card">
+    <h2>{{ spanish_words[0] }}</h2>
+  </div>
+</button>
  
+
+<button name = "b7">
+  <div class="card">
+    <h2>{{ spanish_words[1] }}</h2>
+  </div>
+ 
+<button name = "b8">
+  <div class="card">
+    <h2> {{ spanish_words[2] }}</h2>
+  </div>
+</button>
+
+<button name = "b9">
+  <div class="card">
+    <h2>{{ spanish_words[3] }}</h2>
+  </div>
+</button>
+
+
+<button name = "b10">
 <div class="card">
-<h2>{{ words[0] }}</h2>
+<h2>{{ spanish_words[4] }}</h2>
 </div>
- 
-<div class="card">
-<h2>Gato</h2>
-</div>
- 
-<div class="card">
-<h2>{{ words[1] }}</h2>
-</div>
- 
-<div class="card">
-<h2>english</h2>
-</div>
- 
-<div class="card">
-<h2>{{ bank[2] }} </h2>
-</div>
- 
-<div class="card">
-<h2>Sol</h2>
-</div>
- 
-<div class="card">
-<h2>{{ bank[3] }}</h2>
-</div>
- 
-<div class="card">
-<h2>Luna</h2>
-</div>
- 
-<div class="card">
-<h2>{{ bank[4] }}</h2>
-</div>
- 
-<div class="card">
-<h2>Playa</h2>
-</div>
+</button>
  
 <div class="inputLD">
   <input type="submit" value="Submit">
