@@ -59,6 +59,8 @@ class PlayerInfo:
     other_language = []
     # Array to hold other_language and english words for the display
     all_words_random = []
+    # Dictionary to hold all words and their translations
+    translations = {}
     # Number of guesses for each words and resets after correct selection
     num_of_guesses = 0
     #difficulty: should contain either Easy, Medium, or Hard
@@ -118,10 +120,13 @@ def generate_rand_words(target_language):
     # Will randomly choose words from the txt files for the english array
     # English = random.choices(word_bank, k=5)
     player.english = random.choices(player.word_bank, k=player.number_of_card_pairs)
-    player.english[1] = "hi"
+    #player.english[1] = "hi"
     # Getting definitions by calling get_meaning for the second array definitions
     for i in range(player.number_of_card_pairs):
         player.other_language.append(dic.translate("en", player.english[i])[6][1])
+        #adding to the dictionary for translations
+        player.translations[player.english[i]] = dic.translate("en", player.english[i])[6][1]
+        player.translations[dic.translate("en", player.english[i])[6][1]] = player.english[i]
     # Initialize the all_words_random
     for i in range(player.number_of_card_pairs):
         player.all_words_random.append(player.english[i])
@@ -152,18 +157,20 @@ def valid_input(user_input):
 
 
 
-def correct_input(user_input):
+def correct_input(word1, word2):
     """Check if the user input is correct"""
     # Check if word matches the definition
     # Call valid_input
-    valid_input(user_input)
-    for i in range(player.number_of_card_pairs):
-        if user_input == player.english[i]:
-            update_user_score()
-            remove(user_input)
-            player.num_of_guesses = 3
-            #should update frontend display of guesses
-            render_template("index.html", guess = player.num_of_guesses)
+    valid_input(word1)
+    valid_input(word2)
+    #If word2 maps to word1 through the translations dictionary
+    if word1 == player.translations.get(word2):
+        update_user_score()
+        remove(word1)
+        remove(word2)
+        player.num_of_guesses = 3
+        #should update frontend display of guesses
+        render_template("index.html", guess = player.num_of_guesses)
 
 
 def remove(word):
@@ -236,8 +243,7 @@ def beginning_input():
     generate_rand_words(player.language)
     return render_template('index.html', Language=player.language, Difficulty=player.difficulty,
     score = player.score, guess = player.num_of_guesses,
-    spanish_words = player.other_language, english = player.english, all_words = player.all_words_random,
-    test = player.test)
+    spanish_words = player.other_language, english = player.english, all_words = player.all_words_random)
 
 # @app.route('/')
 # def index():
