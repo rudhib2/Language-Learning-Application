@@ -83,6 +83,14 @@ def set_difficulty():
         with open('hard_words.txt','r', encoding="utf-8") as w:
             player.word_bank = w.read().split()
 
+# Call when recieve inputs from the front end to initialize the difficulty level
+def updateDifficulty(level):
+    if level != "Easy" or level != "Medium" or level != "Hard":
+        print("Something is wrong")
+    else:
+        player.difficulty = level
+
+
 def set_language():
     if player.language == "Spanish":
         player.language = "es"
@@ -97,9 +105,9 @@ def read_word(file):
 
 
 def set_guess(level):
-    if player.level_of_difficulty == "Hard":
+    if player.difficulty == "Hard":
         player.num_of_guesses += 5
-    elif player.level_of_difficulty == "Medium":
+    elif player.difficulty == "Medium":
         player.num_of_guesses += 4
     else:
         player.num_of_guesses += 3
@@ -116,7 +124,7 @@ def get_meaning(provided_language, word, target_language):
 def generate_rand_words(target_language):
     """Generate several? random words in the target_language"""
     # Assigning definition and words into 2 separate arrays each one contains 5 words
-    #player.english.append(player.word_bank[0])
+    # player.english.append(player.word_bank[0])
     # Will randomly choose words from the txt files for the english array
     # English = random.choices(word_bank, k=5)
     player.english = random.choices(player.word_bank, k=player.number_of_card_pairs)
@@ -161,14 +169,16 @@ def correct_input(word1, word2):
     """Check if the user input is correct"""
     # Check if word matches the definition
     # Call valid_input
-    valid_input(word1)
-    valid_input(word2)
+    result1 = valid_input(word1)
+    result2 = valid_input(word2)
+    if result1 or result2 is False:
+        return print("You have an invalid input")
     #If word2 maps to word1 through the translations dictionary
     if word1 == player.translations.get(word2):
         update_user_score()
         remove(word1)
         remove(word2)
-        player.num_of_guesses = 3
+        #player.num_of_guesses = 3
         #should update frontend display of guesses
         render_template("index.html", guess = player.num_of_guesses)
 
@@ -181,12 +191,6 @@ def remove(word):
             player.other_language.pop(i)
             player.number_of_card_pairs -= 1
 
-
-def updateDifficulty(level):
-    if level != "Easy" or level != "Medium" or level != "Hard":
-        print("Something is wrong")
-    else:
-        player.level_of_difficulty = level
 
 
 def status():
@@ -219,9 +223,9 @@ def set_user_score(input):
 
 def update_user_score():
     """ Updating the user score"""
-    if player.level_of_difficulty == "Hard":
+    if player.difficulty == "Hard":
         player.score += 3
-    elif player.level_of_difficulty == "Medium":
+    elif player.difficulty == "Medium":
         player.score += 2
     else:
         player.score += 1
@@ -244,6 +248,7 @@ def beginning_input():
     return render_template('index.html', Language=player.language, Difficulty=player.difficulty,
     score = player.score, guess = player.num_of_guesses,
     spanish_words = player.other_language, english = player.english, all_words = player.all_words_random)
+
 
 # @app.route('/')
 # def index():
