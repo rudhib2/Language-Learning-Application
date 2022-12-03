@@ -99,5 +99,16 @@ header {
   <input type="submit" value="Submit">
 </div>
 
+<script>
+  $(document).ready(function(){
+      $(':button[name=numbers]').click(function() {
+        // var number_of_clicks = 0;
+        var click = $(this).val();
+        // number_of_clicks++;
+        $('#field').val($('#field').val() + click);
+        });
+  });
+</script>
+
 </body>
 </html>

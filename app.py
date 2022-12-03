@@ -278,3 +278,16 @@ if __name__ == "__main__":
 #     db.session.delete(user_to_delete)
 #     db.session.commit()
 #     return redirect(url_for('index'))
+
+
+# create a function that will receive a call from index.html 
+# index.html has to have new variables created inside the script that keep track as to which cards are pressed
+# once two cards are pressed, call this function
+# this function will check if they match
+# if they match, return everything but these two cards (delete these two from array) and update score
+# if no match --guess and show "guess was wrong"
+
+# def checking_click():
+#     if ()
+
+
