@@ -57,6 +57,8 @@ class PlayerInfo:
     language = ""
     # Array storing words in another languages selected by the user
     other_language = []
+    #int for finding language in the multidictionary
+    language_index = 6
     # Array to hold other_language and english words for the display
     all_words_random = []
     # Dictionary to hold all words and their translations
@@ -93,9 +95,11 @@ def updateDifficulty(level):
 
 def set_language():
     if player.language == "Spanish":
-        player.language = "es"
+        # player.language = "es"
+        player.language_index = 6
     if player.language == "French":
-        player.language == "fr"
+        # player.language == "fr"
+        player.language_index = 7
 
 
 
@@ -124,28 +128,30 @@ def get_meaning(provided_language, word, target_language):
 def generate_rand_words(target_language):
     """Generate several? random words in the target_language"""
     # Assigning definition and words into 2 separate arrays each one contains 5 words
-    # player.english.append(player.word_bank[0])
     # Will randomly choose words from the txt files for the english array
-    # English = random.choices(word_bank, k=5)
     player.english = random.choices(player.word_bank, k=player.number_of_card_pairs)
-    #player.english[1] = "hi"
+    removeDuplicates()
     # Getting definitions by calling get_meaning for the second array definitions
     for i in range(player.number_of_card_pairs):
-        player.other_language.append(dic.translate("en", player.english[i])[6][1])
+        #print("ERROR FROM HERE?")
+        #print(player.english[i])
+        #print(dic.translate("en", player.english[i])[player.language_index][1].capitalize())
+        player.other_language.append(dic.translate("en", player.english[i])[player.language_index][1].capitalize())
         #adding to the dictionary for translations
-        player.translations[player.english[i]] = dic.translate("en", player.english[i])[6][1]
-        player.translations[dic.translate("en", player.english[i])[6][1]] = player.english[i]
+        player.translations[player.english[i]] = dic.translate("en", player.english[i])[player.language_index][1]
+        player.translations[dic.translate("en", player.english[i])[player.language_index][1]] = player.english[i]
     # Initialize the all_words_random
     for i in range(player.number_of_card_pairs):
         player.all_words_random.append(player.english[i])
         player.all_words_random.append(player.other_language[i])
     random.shuffle(player.all_words_random)
-    # Call check_not_same(), check for duplicates
-    # if check_not_same() > 0:
-    #     # Remove duplicates
-    #     for i in player.other_language:
-    #         if i in check_not_same():
-    #             player.other_language.remove(i)
+
+def removeDuplicates():
+    temp_english = [*set(player.english)]
+    if len(temp_english) < 5:
+        while len(temp_english) < 5:
+            temp_english.append(random.choice(player.word_bank))
+        player.english = temp_english
 
 
 
@@ -243,6 +249,7 @@ def beginning_input():
     player.language = request.args["Language"]
     player.difficulty = request.args["Difficulty"]
     set_difficulty()
+    set_guess(player.difficulty)
     set_language()
     generate_rand_words(player.language)
     return render_template('index.html', Language=player.language, Difficulty=player.difficulty,
