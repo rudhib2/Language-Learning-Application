@@ -101,9 +101,9 @@ def read_word(file):
 
 
 def set_guess(level):
-    if player.level_of_difficulty == "Hard":
+    if player.difficulty == "Hard":
         player.num_of_guesses += 5
-    elif player.level_of_difficulty == "Medium":
+    elif player.difficulty == "Medium":
         player.num_of_guesses += 4
     else:
         player.num_of_guesses += 3
@@ -120,28 +120,18 @@ def get_meaning(provided_language, word, target_language):
 def generate_rand_words(target_language):
     """Generate several? random words in the target_language"""
     # Assigning definition and words into 2 separate arrays each one contains 5 words
-    #player.english.append(player.word_bank[0])
     # Will randomly choose words from the txt files for the english array
-    # English = random.choices(word_bank, k=5)
     player.english = random.choices(player.word_bank, k=player.number_of_card_pairs)
-    print("BEFORE removing duplicates")
-    for i in range (player.number_of_card_pairs):
-        print (player.english[i])
     removeDuplicates()
     # Getting definitions by calling get_meaning for the second array definitions
     for i in range(player.number_of_card_pairs):
-        print("ERROR FROM HERE?")
-        print(i)
-        print(len(player.english))
-        print(player.english[i])
-        print(dic.translate("en", player.english[i])[player.language_index][1].capitalize())
+        #print("ERROR FROM HERE?")
+        #print(player.english[i])
+        #print(dic.translate("en", player.english[i])[player.language_index][1].capitalize())
         player.other_language.append(dic.translate("en", player.english[i])[player.language_index][1].capitalize())
         #adding to the dictionary for translations
         player.translations[player.english[i]] = dic.translate("en", player.english[i])[player.language_index][1]
         player.translations[dic.translate("en", player.english[i])[player.language_index][1]] = player.english[i]
-    print("SPANISH TRANSLATIONS")
-    for i in range (len(player.other_language)):
-        print (player.other_language[i])
     # Initialize the all_words_random
     for i in range(player.number_of_card_pairs):
         player.all_words_random.append(player.english[i])
@@ -151,15 +141,9 @@ def generate_rand_words(target_language):
 def removeDuplicates():
     temp_english = [*set(player.english)]
     if len(temp_english) < 5:
-        print("FOUND DUPLICATES")   
         while len(temp_english) < 5:
             temp_english.append(random.choice(player.word_bank))
         player.english = temp_english
-    print("After removing duplicates")    
-    for i in range (len(player.english)):
-        print (player.english[i])
-    print (len(player.english))
-    #removeDuplicates()        
 
 
 
@@ -263,6 +247,7 @@ def beginning_input():
     player.language = request.args["Language"]
     player.difficulty = request.args["Difficulty"]
     set_difficulty()
+    set_guess(player.difficulty)
     set_language()
     generate_rand_words(player.language)
     return render_template('index.html', Language=player.language, Difficulty=player.difficulty,
