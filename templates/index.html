@@ -25,6 +25,7 @@ header {
   height: 75px; 
   float:left 
 }
+
 </style>
 <header>
     <h2>Learning Card Game</h2>
@@ -48,25 +49,25 @@ header {
 <button name = "3">
   <div class="card">
     <h2>{{ english[2] }}</h2>
-  </div>
+  </div>  
 </button>
 
 <button name = "b4">
   <div class="card">
     <h2>{{ english[3] }}</h2>
-  </div>
+  </div>   
 </button>
 
 <button name = "b5">
   <div class="card">
     <h2>{{ english[4] }} </h2>
-  </div>
+  </div> 
 </button>
 
 <button name = "b6">
   <div class="card">
     <h2>{{ spanish_words[0] }}</h2>
-  </div>
+  </div>   
 </button>
  
 
@@ -78,25 +79,36 @@ header {
 <button name = "b8">
   <div class="card">
     <h2> {{ spanish_words[2] }}</h2>
-  </div>
+  </div>  
 </button>
 
 <button name = "b9">
   <div class="card">
     <h2>{{ spanish_words[3] }}</h2>
-  </div>
+  </div>  
 </button>
 
 
 <button name = "b10">
-<div class="card">
-<h2>{{ spanish_words[4] }}</h2>
-</div>
+  <div class="card">
+    <h2>{{ spanish_words[4] }}</h2>
+  </div>   
 </button>
  
 <div class="inputLD">
   <input type="submit" value="Submit">
 </div>
+
+<script>
+  $(document).ready(function(){
+      $(':button[name=numbers]').click(function() {
+        // var number_of_clicks = 0;
+        var click = $(this).val();
+        // number_of_clicks++;
+        $('#field').val($('#field').val() + click);
+        });
+  });
+</script>
 
 </body>
 </html>

@@ -85,6 +85,14 @@ def set_difficulty():
         with open('hard_words.txt','r', encoding="utf-8") as w:
             player.word_bank = w.read().split()
 
+# Call when recieve inputs from the front end to initialize the difficulty level
+def updateDifficulty(level):
+    if level != "Easy" or level != "Medium" or level != "Hard":
+        print("Something is wrong")
+    else:
+        player.difficulty = level
+
+
 def set_language():
     if player.language == "Spanish":
         # player.language = "es"
@@ -190,12 +198,6 @@ def remove(word):
             player.number_of_card_pairs -= 1
 
 
-def updateDifficulty(level):
-    if level != "Easy" or level != "Medium" or level != "Hard":
-        print("Something is wrong")
-    else:
-        player.level_of_difficulty = level
-
 
 def status():
     """Check if the game is over"""
@@ -227,9 +229,9 @@ def set_user_score(input):
 
 def update_user_score():
     """ Updating the user score"""
-    if player.level_of_difficulty == "Hard":
+    if player.difficulty == "Hard":
         player.score += 3
-    elif player.level_of_difficulty == "Medium":
+    elif player.difficulty == "Medium":
         player.score += 2
     else:
         player.score += 1
@@ -253,6 +255,7 @@ def beginning_input():
     return render_template('index.html', Language=player.language, Difficulty=player.difficulty,
     score = player.score, guess = player.num_of_guesses,
     spanish_words = player.other_language, english = player.english, all_words = player.all_words_random)
+
 
 # @app.route('/')
 # def index():
@@ -282,3 +285,16 @@ if __name__ == "__main__":
 #     db.session.delete(user_to_delete)
 #     db.session.commit()
 #     return redirect(url_for('index'))
+
+
+# create a function that will receive a call from index.html 
+# index.html has to have new variables created inside the script that keep track as to which cards are pressed
+# once two cards are pressed, call this function
+# this function will check if they match
+# if they match, return everything but these two cards (delete these two from array) and update score
+# if no match --guess and show "guess was wrong"
+
+# def checking_click():
+#     if ()
+
+
