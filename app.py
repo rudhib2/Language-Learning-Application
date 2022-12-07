@@ -2,7 +2,7 @@
 #from datetime import datetime  url_for, redirect, , flash
 from ast import IsNot
 import random
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from PyMultiDictionary import MultiDictionary
 
@@ -11,27 +11,6 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///testdb'
 #database???
 db = SQLAlchemy(app)
-
-# class user(db.Model):
-#     name = db.Column(db.String(50), nullable=False, primary_key=True)
-#     score = db.Column(db.Integer, default=0)
-#     finished = db.Column(db.Boolean, default=False)
-
-#     def __init__(self, name):
-#         self.name = name
-#         self.score = get_user_score()
-#         self.finished = status()
-
-
-
-
-# # @app.route('/')
-# # def index():
-# #     temp = 1
-# #     return render_template('index.html', value = temp, guess = "test")
-
-# if __name__ == "__main__":
-#     app.run(debug=True)
 
 class PlayerInfo:
     """declaring PlayerInfo Class to keep track of words, score, guesses"""
@@ -67,6 +46,9 @@ class PlayerInfo:
     num_of_guesses = 0
     #difficulty: should contain either Easy, Medium, or Hard
     difficulty = ""
+    #match
+    match = "NO MATCH"
+    done = False
 
 
 
@@ -133,19 +115,16 @@ def generate_rand_words(target_language):
     removeDuplicates()
     # Getting definitions by calling get_meaning for the second array definitions
     for i in range(player.number_of_card_pairs):
-        #print("ERROR FROM HERE?")
-        #print(player.english[i])
-        #print(dic.translate("en", player.english[i])[player.language_index][1].capitalize())
         player.other_language.append(dic.translate("en", player.english[i])[player.language_index][1].capitalize())
         #adding to the dictionary for translations
-        player.translations[player.english[i]] = dic.translate("en", player.english[i])[player.language_index][1]
-        player.translations[dic.translate("en", player.english[i])[player.language_index][1]] = player.english[i]
+        player.translations[player.english[i]] = dic.translate("en", player.english[i])[player.language_index][1].capitalize()
+        player.translations[dic.translate("en", player.english[i])[player.language_index][1].capitalize()] = player.english[i]
     # Initialize the all_words_random
     for i in range(player.number_of_card_pairs):
         player.all_words_random.append(player.english[i])
         player.all_words_random.append(player.other_language[i])
     random.shuffle(player.all_words_random)
-
+        
 def removeDuplicates():
     temp_english = [*set(player.english)]
     if len(temp_english) < 5:
@@ -155,38 +134,39 @@ def removeDuplicates():
 
 
 
-def valid_input(user_input):
-    """Checking if valid user input, comparing get_meaning to user input"""
-    # Checking the array of definitions and words to see if user_input exists
-    valid = False
-    if player.num_of_guesses == 0:
-        # Fix later so instead of printing we end game
-        return print("Ran out of guesses, sorry :(")
-    for i in range(player.number_of_card_pairs):
-        if user_input == player.english[i]:
-            valid = True
-    if valid is False:
-        player.num_of_guesses -= 1
-    return valid
+# def valid_input(user_input):
+#     """Checking if valid user input, comparing get_meaning to user input"""
+#     # Checking the array of definitions and words to see if user_input exists
+#     valid = False
+#     if player.num_of_guesses == 0:
+#         # Fix later so instead of printing we end game
+#         return print("Ran out of guesses, sorry :(")
+#     for i in range(player.number_of_card_pairs):
+#         if user_input == player.english[i]:
+#             valid = True
+#     if valid is False:
+#         player.num_of_guesses -= 1
+#     return valid
 
 
 
-def correct_input(word1, word2):
+def correct_input(idx1, idx2):
     """Check if the user input is correct"""
     # Check if word matches the definition
-    # Call valid_input
-    result1 = valid_input(word1)
-    result2 = valid_input(word2)
-    if result1 or result2 is False:
-        return print("You have an invalid input")
-    #If word2 maps to word1 through the translations dictionary
-    if word1 == player.translations.get(word2):
+    print(player.translations.get(player.all_words_random[idx2]))
+    if player.all_words_random[idx1] == player.translations.get(player.all_words_random[idx2]):
+        player.match = "MATCH"
         update_user_score()
-        remove(word1)
-        remove(word2)
-        #player.num_of_guesses = 3
         #should update frontend display of guesses
-        render_template("index.html", guess = player.num_of_guesses)
+        #player.num_of_guesses = player.num_of_guesses - 
+        #render_template("index.html", guess = player.num_of_guesses, score = player.score)
+    else:
+        player.match = "NO MATCH"
+        player.num_of_guesses = player.num_of_guesses - 1
+    render_template("index.html", Language=player.language, Difficulty=player.difficulty,
+    score = player.score, guess = player.num_of_guesses,
+    spanish_words = player.other_language, english = player.english, all_words = player.all_words_random) 
+
 
 
 def remove(word):
@@ -231,16 +211,31 @@ def update_user_score():
     """ Updating the user score"""
     if player.difficulty == "Hard":
         player.score += 3
+        if player.score == 15:
+            print("SCORE GOTTEN")
+            done = True
     elif player.difficulty == "Medium":
         player.score += 2
+        if player.score == 10:
+            print("SCORE GOTTEN")
+            done = True
     else:
         player.score += 1
+        if player.score == 5:
+            print("SCORE GOTTEN")
+            done = True
 
 
 @app.route('/')
 def welcome():
     """Setting a welcome page"""
     return render_template('welcome.html')
+
+@app.route('/end')
+def end():
+    """Setting a welcome page"""
+    print("MADE IT")
+    return render_template('endgame.html', score = player.score)
 
 
 @app.route('/Beginning Input(L/D)')
@@ -253,48 +248,48 @@ def beginning_input():
     set_language()
     generate_rand_words(player.language)
     return render_template('index.html', Language=player.language, Difficulty=player.difficulty,
-    score = player.score, guess = player.num_of_guesses,
-    spanish_words = player.other_language, english = player.english, all_words = player.all_words_random)
+    score = player.score, guess = player.num_of_guesses, all_words = player.all_words_random)
 
+# @app.route("/anything", methods=['GET', 'POST'])
+# def cardIndexCheck():
+#     cardIndex1 = 0
+#     cardIndex2 = 0
+#     new_score = 0
+#     new_guess = 0
+#     data = []
+#     if request.method == "POST":
+#         data = request.form["data"]
+#         cardIndex1 = int(data[0])
+#         cardIndex2 = int(data[2])
+#         correct_input(cardIndex1, cardIndex2)
+#         new_score = player.score
+#         new_guess = player.num_of_guesses
+#         return render_template('index.html', Language=player.language, Difficulty=player.difficulty,
+#         score = new_score, guess = new_guess, all_words = player.all_words_random)
+#         #return str(cardIndex1) + str(cardIndex2) + "Hello"
 
-# @app.route('/')
-# def index():
-#     temp = 1
-#     #user = user.query.all(),
-#     return render_template('index.html', score = player.score,
-#     guess = player.num_of_guesses, words = player.english)
+@app.route("/Card Check", methods=['GET', 'POST'])
+def cardIndexCheck():
+    cardIndex1 = 0
+    cardIndex2 = 0
+    boolCardCheck = True
+    data = []
+    if request.method == "POST":
+        data = request.form["data"]
+        cardIndex1 = int(data[0])
+        cardIndex2 = int(data[2])
+        correct_input(cardIndex1, cardIndex2)
+        # player.done = True
+        # if player.done:
+        #     print("here")
+        #     return "done"
+        returnText = str(player.score)
+        return returnText
+    return render_template("index.html", Language=player.language, Difficulty=player.difficulty,
+         score = 2, guess = 8, all_words = player.all_words_random)
+ 
+
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-# @app.route('/', methods = ['GET', 'POST'])
-# def instance():
-#     if request.method == 'POST':
-#         player = user(request.form['name'])
-#         db.session.add(player)
-#         db.session.commit()
-#         flash('You can start playing!!!')
-#         return redirect(url_for('index'))
-#     else:
-#         return render_template('instance.html')
-
-
-# @app.route('/delete/')
-# def delete(name):
-#     user_to_delete = user.query.get_or_404(name)
-#     db.session.delete(user_to_delete)
-#     db.session.commit()
-#     return redirect(url_for('index'))
-
-
-# create a function that will receive a call from index.html 
-# index.html has to have new variables created inside the script that keep track as to which cards are pressed
-# once two cards are pressed, call this function
-# this function will check if they match
-# if they match, return everything but these two cards (delete these two from array) and update score
-# if no match --guess and show "guess was wrong"
-
-# def checking_click():
-#     if ()
-
 

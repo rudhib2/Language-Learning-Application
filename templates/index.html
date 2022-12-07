@@ -5,7 +5,7 @@
  
  
 header {
-  background-color: rgb(162, 100, 237);
+  background-color: rgb(12, 5, 197);
   color: white;
   border: 3px solid black;
   text-align: center;
@@ -21,94 +21,392 @@ header {
   text-align: center;
   margin: 10px;
   padding: 8px;
-  width: 100px;
-  height: 75px; 
-  float:left 
+  width: 150px;
+  height: 75px;
+  float:left
 }
 
 </style>
 <header>
     <h2>Learning Card Game</h2>
     <h4>Language: {{ Language }} &nbsp; &nbsp;  Difficulty: {{ Difficulty }}</h4>
-    <h4>Guesses: {{ guess }} &nbsp; &nbsp;  Score: {{ score }}</h4>
+    <h4> Score: </h4><div id = "result"> <h4> 0 </h4></div>
 </header>
 <body>
-
-<button name = "1">
-  <div class="card">
-    <h2>{{ english[0] }}</h2>
-  </div>  
-</button>
  
-<button name = "2">
-  <div class="card">
-    <h2>{{ english[1] }}</h2>
-  </div>
-</button>
-
-<button name = "3">
-  <div class="card">
-    <h2>{{ english[2] }}</h2>
-  </div>  
-</button>
-
-<button name = "b4">
-  <div class="card">
-    <h2>{{ english[3] }}</h2>
-  </div>   
-</button>
-
-<button name = "b5">
-  <div class="card">
-    <h2>{{ english[4] }} </h2>
-  </div> 
-</button>
-
-<button name = "b6">
-  <div class="card">
-    <h2>{{ spanish_words[0] }}</h2>
-  </div>   
-</button>
- 
-
-<button name = "b7">
-  <div class="card">
-    <h2>{{ spanish_words[1] }}</h2>
-  </div>
- 
-<button name = "b8">
-  <div class="card">
-    <h2> {{ spanish_words[2] }}</h2>
-  </div>  
-</button>
-
-<button name = "b9">
-  <div class="card">
-    <h2>{{ spanish_words[3] }}</h2>
-  </div>  
-</button>
-
-
-<button name = "b10">
-  <div class="card">
-    <h2>{{ spanish_words[4] }}</h2>
-  </div>   
-</button>
- 
-<div class="inputLD">
-  <input type="submit" value="Submit">
+<div class="card" id="card1" onclick="card1()" style="background-color:cornflowerblue">
+<h2>{{all_words[0] }}</h2>
 </div>
-
+ 
+<div class="card" id="card2" onclick="card2()" style="background-color:cornflowerblue">
+<h2>{{all_words[1] }}</h2>
+</div>
+ 
+<div class="card" id="card3" onclick="card3()" style="background-color:cornflowerblue">
+<h2>{{all_words[2] }}</h2>
+</div>
+ 
+<div class="card" id="card4" onclick="card4()" style="background-color:cornflowerblue">
+<h2>{{all_words[3] }}</h2>
+</div>
+ 
+<div class="card" id="card5" onclick="card5()" style="background-color:cornflowerblue">
+<h2>{{all_words[4] }} </h2>
+</div>
+ 
+<div class="card" id="card6" onclick="card6()" style="background-color:cornflowerblue">
+<h2>{{all_words[5] }}</h2>
+</div>
+ 
+<div class="card" id="card7" onclick="card7()" style="background-color:cornflowerblue">
+<h2>{{all_words[6] }}</h2>
+</div>
+ 
+<div class="card" id="card8" onclick="card8()" style="background-color:cornflowerblue">
+<h2>{{all_words[7] }}</h2>
+</div>
+ 
+<div class="card" id="card9" onclick="card9()" style="background-color:cornflowerblue">
+<h2>{{all_words[8] }}</h2>
+</div>
+ 
+<div class="card" id="card10" onclick="card10()" style="background-color:cornflowerblue">
+<h2>{{all_words[9] }}</h2>
+</div>
+  
+<!-- <p id="demo"></p>
+ 
+<p id="demo1"></p>
+<p id="demo2"></p>
+<div id="data"></div> -->
+<!--
+<div id="result"></div> -->
+ 
+ 
 <script>
-  $(document).ready(function(){
-      $(':button[name=numbers]').click(function() {
-        // var number_of_clicks = 0;
-        var click = $(this).val();
-        // number_of_clicks++;
-        $('#field').val($('#field').val() + click);
-        });
-  });
-</script>
+var count = 0;
+var cardIndex1 = 0;
+var cardIndex2 = 0;
+ 
+function card1() {
+    var x = document.getElementById("card1");
+    if (x.style.backgroundColor === "cornflowerblue") {
+        x.style.backgroundColor = "#83AAF1";
+        x.style.boxShadow = "10px 10px 10px #839ef1";
+        count = count + 1;
+        // document.getElementById("demo").innerHTML = count;
+        if (count == 1) {
+            cardIndex1 = 0;
+        }
+        // document.getElementById("demo1").innerHTML = cardIndex1;
+        if (count == 2) {
+            cardIndex2 = 0;
+            var returnEnd = cardIndexCheck();
+            if (returnEnd == "done"){
+                console.log("Hello World")
+                window.location.href='end'
+            }
+        }
+        // document.getElementById("demo2").innerHTML = cardIndex2;
+    } else {
+        x.style.backgroundColor = "cornflowerblue";
+        x.style.boxShadow = "";
+        count = count - 1;
+        // document.getElementById("demo").innerHTML = count;
+       
+    }
+}
+ 
+function card2() {
+    var x = document.getElementById("card2");
+    if (x.style.backgroundColor === "cornflowerblue") {
+        x.style.backgroundColor = "#83AAF1";
+        x.style.boxShadow = "10px 10px 10px #839ef1";
+        count = count + 1;
+        // document.getElementById("demo").innerHTML = count;
+        if (count == 1) {
+            cardIndex1 = 1;
+        }
+        // document.getElementById("demo1").innerHTML = cardIndex1;
+        if (count == 2) {
+            cardIndex2 = 1;
+            var returnEnd = cardIndexCheck();
+            if (returnEnd == "done"){
+                console.log("Hello World")
+                window.location.href='end'
+            }
+        }
+        // document.getElementById("demo2").innerHTML = cardIndex2;
+    } else {
+        x.style.backgroundColor = "cornflowerblue";
+        x.style.boxShadow = "";
+        count = count - 1;
+        // document.getElementById("demo").innerHTML = count;
+    }
+}
+ 
+function card3() {
+    var x = document.getElementById("card3");
+    if (x.style.backgroundColor === "cornflowerblue") {
+        x.style.backgroundColor = "#83AAF1";
+        x.style.boxShadow = "10px 10px 10px #839ef1";
+        count = count + 1;
+        //document.getElementById("demo").innerHTML = count;
+        if (count == 1) {
+            cardIndex1 = 2;
+        }
+        //document.getElementById("demo1").innerHTML = cardIndex1;
+        if (count == 2) {
+            cardIndex2 = 2;
+            var returnEnd = cardIndexCheck();
+            if (returnEnd == "done"){
+                console.log("Hello World")
+                window.location.href='end'
+            }
+        }
+        document.getElementById("demo2").innerHTML = cardIndex2;
+    } else {
+        x.style.backgroundColor = "cornflowerblue";
+        x.style.boxShadow = "";
+        count = count - 1;
+        //document.getElementById("demo").innerHTML = count;
+    }
+}
+ 
+function card4() {
+    var x = document.getElementById("card4");
+    if (x.style.backgroundColor === "cornflowerblue") {
+        x.style.backgroundColor = "#83AAF1";
+        x.style.boxShadow = "10px 10px 10px #839ef1";
+        count = count + 1;
+        //document.getElementById("demo").innerHTML = count;
+        if (count == 1) {
+            cardIndex1 = 3;
+        }
+        //document.getElementById("demo1").innerHTML = cardIndex1;
+        if (count == 2) {
+            cardIndex2 = 3;
+            var returnEnd = cardIndexCheck();
+            if (returnEnd == "done"){
+                console.log("Hello World")
+                window.location.href='end'
+            }
+        }
+        //document.getElementById("demo2").innerHTML = cardIndex2;
+    } else {
+        x.style.backgroundColor = "cornflowerblue";
+        x.style.boxShadow = "";
+        count = count - 1;
+        //document.getElementById("demo").innerHTML = count;
+    }
+}
+ 
+function card5() {
+    var x = document.getElementById("card5");
+    if (x.style.backgroundColor === "cornflowerblue") {
+        x.style.backgroundColor = "#83AAF1";
+        x.style.boxShadow = "10px 10px 10px #839ef1";
+        count = count + 1;
+        //document.getElementById("demo").innerHTML = count;
+        if (count == 1) {
+            cardIndex1 = 4;
+        }
+        //document.getElementById("demo1").innerHTML = cardIndex1;
+        if (count == 2) {
+            cardIndex2 = 4;
+            var returnEnd = cardIndexCheck();
+            if (returnEnd == "done"){
+                console.log("Hello World")
+                window.location.href='end'
+            }
+        }
+        //document.getElementById("demo2").innerHTML = cardIndex2;
+    } else {
+        x.style.backgroundColor = "cornflowerblue";
+        x.style.boxShadow = "";
+        count = count - 1;
+        //document.getElementById("demo").innerHTML = count;
+    }
+}
+ 
+ 
+function card6() {
+    var x = document.getElementById("card6");
+    if (x.style.backgroundColor === "cornflowerblue") {
+        x.style.backgroundColor = "#83AAF1";
+        x.style.boxShadow = "10px 10px 10px #839ef1";
+        count = count + 1;
+        //document.getElementById("demo").innerHTML = count;
+        if (count == 1) {
+            cardIndex1 = 5;
+        }
+        //document.getElementById("demo1").innerHTML = cardIndex1;
+        if (count == 2) {
+            cardIndex2 = 5;
+            var returnEnd = cardIndexCheck();
+            if (returnEnd == "done"){
+                console.log("Hello World")
+                window.location.href='end'
+            }
+        }
+        //document.getElementById("demo2").innerHTML = cardIndex2;
+    } else {
+        x.style.backgroundColor = "cornflowerblue";
+        x.style.boxShadow = "";
+        count = count - 1;
+        //document.getElementById("demo").innerHTML = count;
+    }
+}
+ 
+ 
+function card7() {
+    var x = document.getElementById("card7");
+    if (x.style.backgroundColor === "cornflowerblue") {
+        x.style.backgroundColor = "#83AAF1";
+        x.style.boxShadow = "10px 10px 10px #839ef1";
+        count = count + 1;
+        //document.getElementById("demo").innerHTML = count;
+        if (count == 1) {
+            cardIndex1 = 6;
+        }
+        //document.getElementById("demo1").innerHTML = cardIndex1;
+        if (count == 2) {
+            cardIndex2 = 6;
+            var returnEnd = cardIndexCheck();
+            if (returnEnd == "done"){
+                console.log("Hello World")
+                window.location.href='end'
+            }
+        }
+        //document.getElementById("demo2").innerHTML = cardIndex2;
+    } else {
+        x.style.backgroundColor = "cornflowerblue";
+        x.style.boxShadow = "";
+        count = count - 1;
+        //document.getElementById("demo").innerHTML = count;
+    }
+}
+ 
+ 
+function card8() {
+    var x = document.getElementById("card8");
+    if (x.style.backgroundColor === "cornflowerblue") {
+        x.style.backgroundColor = "#83AAF1";
+        x.style.boxShadow = "10px 10px 10px #839ef1";
+        count = count + 1;
+        //document.getElementById("demo").innerHTML = count;
+        if (count == 1) {
+            cardIndex1 = 7;
+        }
+        //document.getElementById("demo1").innerHTML = cardIndex1;
+        if (count == 2) {
+            cardIndex2 = 7;
+            var returnEnd = cardIndexCheck();
+            if (returnEnd == "done"){
+                console.log("Hello World")
+                window.location.href='end'
+            }
+        }
+        //document.getElementById("demo2").innerHTML = cardIndex2;
+    } else {
+        x.style.backgroundColor = "cornflowerblue";
+        x.style.boxShadow = "";
+        count = count - 1;
+        //document.getElementById("demo").innerHTML = count;
+    }
+}
+ 
+ 
+function card9() {
+    var x = document.getElementById("card9");
+    if (x.style.backgroundColor === "cornflowerblue") {
+        x.style.backgroundColor = "#83AAF1";
+        x.style.boxShadow = "10px 10px 10px #839ef1";
+        count = count + 1;
+        //document.getElementById("demo").innerHTML = count;
+        if (count == 1) {
+            cardIndex1 = 8;
+        }
+        //document.getElementById("demo1").innerHTML = cardIndex1;
+        if (count == 2) {
+            cardIndex2 = 8;
+            var returnEnd = cardIndexCheck();
+            if (returnEnd == "done"){
+                console.log("Hello World")
+                window.location.href='end'
+            }
+        }
+        //document.getElementById("demo2").innerHTML = cardIndex2;
+    } else {
+        x.style.backgroundColor = "cornflowerblue";
+        x.style.boxShadow = "";
+        count = count - 1;
+        //document.getElementById("demo").innerHTML = count;
+    }
+}
+ 
+ 
+function card10() {
+    var x = document.getElementById("card10");
+    if (x.style.backgroundColor === "cornflowerblue") {
+        x.style.backgroundColor = "#83AAF1";
+        x.style.boxShadow = "10px 10px 10px #839ef1";
+        count = count + 1;
+        //document.getElementById("demo").innerHTML = count;
+        if (count == 1) {
+            cardIndex1 = 9;
+        }
+        //document.getElementById("demo1").innerHTML = cardIndex1;
+        if (count == 2) {
+            cardIndex2 = 9;
+            var returnEnd = cardIndexCheck();
+            if (returnEnd == "done"){
+                console.log("Hello World")
+                window.location.href='end'
+            }
+        }
+        //document.getElementById("demo2").innerHTML = cardIndex2;
+    } else {
+        x.style.backgroundColor = "cornflowerblue";
+        x.style.boxShadow = "";
+        count = count - 1;
+        //document.getElementById("demo").innerHTML = count;
+    }
+}
+ 
 
+
+ 
+function correctCard(correct1, correct2) {
+    var firstCorrect = document.getElementById("card1");
+    var secondCorrect = document.getElementById(correct2);
+    firstCorrect.style.backgroundColor = "green";
+    secondCorrect.style.backgroundColor = "green";
+}
+ 
+function test() {
+    var x = document.getElementById("card3");
+    x.style.backgroundColor = "green";
+    x.style.boxShadow = "100px 100px 100px #839ef1";
+}
+ 
+function cardIndexCheck() {
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function()
+    {
+        if(this.readyState == 4 && this.status == 200) {
+            
+            result.innerHTML = this.responseText;
+        }
+    }
+    var data = [cardIndex1, cardIndex2]
+ 
+    req.open('POST', '/Card Check', true);
+    req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+    req.send("data=" + data);
+}
+</script>
+ 
+ 
 </body>
 </html>
