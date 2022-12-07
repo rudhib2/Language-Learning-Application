@@ -67,6 +67,14 @@ def set_difficulty():
         with open('hard_words.txt','r', encoding="utf-8") as w:
             player.word_bank = w.read().split()
 
+# Call when recieve inputs from the front end to initialize the difficulty level
+def updateDifficulty(level):
+    if level != "Easy" or level != "Medium" or level != "Hard":
+        print("Something is wrong")
+    else:
+        player.difficulty = level
+
+
 def set_language():
     if player.language == "Spanish":
         # player.language = "es"
@@ -169,12 +177,6 @@ def remove(word):
             player.other_language.pop(i)
             player.number_of_card_pairs -= 1
 
-
-def updateDifficulty(level):
-    if level != "Easy" or level != "Medium" or level != "Hard":
-        print("Something is wrong")
-    else:
-        player.level_of_difficulty = level
 
 
 def status():
