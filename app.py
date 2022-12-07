@@ -2,7 +2,7 @@
 #from datetime import datetime  url_for, redirect, , flash
 from ast import IsNot
 import random
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from PyMultiDictionary import MultiDictionary
 
@@ -48,6 +48,7 @@ class PlayerInfo:
     difficulty = ""
     #match
     match = "NO MATCH"
+    done = False
 
 
 
@@ -210,17 +211,17 @@ def update_user_score():
         player.score += 3
         if player.score == 15:
             print("SCORE GOTTEN")
-            test()
+            done = True
     elif player.difficulty == "Medium":
         player.score += 2
         if player.score == 10:
             print("SCORE GOTTEN")
-            test()
+            done = True
     else:
         player.score += 1
         if player.score == 5:
             print("SCORE GOTTEN")
-            test()
+            done = True
 
 
 @app.route('/')
@@ -229,7 +230,7 @@ def welcome():
     return render_template('welcome.html')
 
 @app.route('/end')
-def test():
+def end():
     """Setting a welcome page"""
     print("MADE IT")
     return render_template('endgame.html', score = player.score)
@@ -276,6 +277,10 @@ def cardIndexCheck():
         cardIndex1 = int(data[0])
         cardIndex2 = int(data[2])
         correct_input(cardIndex1, cardIndex2)
+        # player.done = True
+        # if player.done:
+        #     print("here")
+        #     return "done"
         returnText = str(player.score)
         return returnText
     return render_template("index.html", Language=player.language, Difficulty=player.difficulty,
