@@ -9,13 +9,16 @@ Our Front end consists of two HTML files, Welcome.html and Index.html  Welcome.h
 
 Our Back End consists of a PlayerInfo class where we store.
 This class includes a score that keep tracks of the score of the user.
-Number_of_card_pairs was set to the default value of 5, so in total we have 10 cards on display.
-Word_bank is an array that stores all the words.
-English is an away that stores 5 words in english.
-Language stores the language of  user choice.
-Other_language is an array that stores the other 5 words in the other selected language.
-All_words_random is an array that stores the word generated at random.
-Translations is 
+Number_of_card_pairs was set to the default value of 5, so in total we have 10 cards on display
+Word_bank is an array that stores all the words
+English is an away that stores 5 words in english
+Language stores the language of  user choice
+Other_language is an array that stores the other 5 words in the other selected language
+All_words_random is an array that stores the word generated at random
+Translations holds all the words in their translations
+Num_of_guesses holds the  number of guesses that each user has depending on their selected difficulty level
+Difficulty has three levels of difficulty (Easy, Medium, or Hard). 
+
 
 ## Installation instructions
 Run git pull origin main to download our application. 
