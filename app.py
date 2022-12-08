@@ -162,6 +162,8 @@ def correct_input(idx1, idx2):
         #render_template("index.html", guess = player.num_of_guesses, score = player.score)
     else:
         player.match = "NO MATCH"
+        decrease_user_score()
+
         player.num_of_guesses = player.num_of_guesses - 1
     render_template("index.html", Language=player.language, Difficulty=player.difficulty,
     score = player.score, guess = player.num_of_guesses,
@@ -225,6 +227,21 @@ def update_user_score():
             print("SCORE GOTTEN")
             done = True
 
+def decrease_user_score():
+    """ Updating the user score"""
+    if player.difficulty == "Hard":
+        player.score -= 3
+        if player.score < 0:
+            player.score = 0
+    elif player.difficulty == "Medium":
+        player.score -= 2
+        if player.score < 0:
+            player.score = 0   
+    else:
+        player.score -= 1
+        if player.score < 0:
+            player.score = 0
+           
 
 @app.route('/')
 def welcome():
@@ -279,10 +296,10 @@ def cardIndexCheck():
         cardIndex1 = int(data[0])
         cardIndex2 = int(data[2])
         correct_input(cardIndex1, cardIndex2)
-        # player.done = True
+        player.done = True
         # if player.done:
         #     print("here")
-        #     return "done"
+        #     return ""
         returnText = str(player.score)
         return returnText
     return render_template("index.html", Language=player.language, Difficulty=player.difficulty,
